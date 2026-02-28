@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Page</title>
+    <link rel="stylesheet" href="{% static 'inventory.css' %}">
+    <link rel="stylesheet" href="{% static 'navbar.css' %}">
+</head>
+<body>
+    <!-- Navigation bar -->
+    <div class="navbar">
+        <div class="nav-left">
+            <a href="{% url 'landingpage' %}">Home</a>
+            <!-- Add more links as needed -->
+        </div>
+        <div class="nav-right">
+            {% if user.is_authenticated %}
+                <div class="user-dropdown">
+                    <button class="dropbtn">{{ user.username }}</button>
+                    <a href="{% url 'logout' %}">
+                        <button class="dropbtn">Log Out</button>
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="heading">INVENTORY</div>
+        <div class="menu-row">
+            <div class="command">Category</div>
+            <div class="command">Sub-Category</div>
+            <div class="command">Item</div>
+            <div class="command">Count</div>
+        </div>
+
+        {% for item in items %}
+        <div class="row added-item-row ">
+            <div class="command">{{ item.subcategory.category }}</div>
+            <div class="command">{{ item.subcategory }}</div>
+            <div class="command">{{ item.name }}</div>
+            <div class="command">{{ item.count }}</div>
+        </div>
+        {% endfor %}
+        <button class="add-row-btn" onclick="showPopupForm()">Add Item</button>
+    </div>
+
+    <form id="inventoryForm" action="/save_inventory/" method="post">
+        {% csrf_token %}
+        <div class="popup-form" id="popupForm">
+            <h2>Add Item</h2>
+            <select id="categoryInput" class="drop" name="categoryInput" placeholder="Category">
+                {% for category in categories %}
+                    <option value="{{ category.id }}">{{ category.name }}</option>
+                {% endfor %}
+            </select>
+            
+            <select id="subCategoryInput" class="drop" name="subCategoryInput" placeholder="Sub-Category">
+                {% for subcategory in subcategories %}
+                    <option value="{{ subcategory.id }}">{{ subcategory.name }}</option>
+                {% endfor %}
+            </select>
+            <input type="text" id="nameInput" name="nameInput" placeholder="Item">
+            <input type="number" id="countInput" name="countInput" placeholder="Count">
+            <button type="submit">Save</button>
+        </div>
+    </form>
+
+
+    <script src="{% static 'inventory.js' %}"></script>
+</body>
+</html>
