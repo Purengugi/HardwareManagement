@@ -1,6 +1,6 @@
 # HARDWARE MANAGEMENT SYSTEM
 
-This ia a complete web-based system for managing a hardware store, allowing businesses to:
+This ia a complete web-based system for managing a hardware store, allowing it to:
 
 - Add and manage products
 
